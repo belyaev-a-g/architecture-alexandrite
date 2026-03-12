@@ -1,0 +1,24 @@
+@startuml
+
+title Операция чтения списка заказов 
+
+actor Operator
+participant MES_API
+participant Redis
+database MES_DB
+
+Operator --> MES_API: Запрос на получение списка заказов
+MES_API --> Redis: Попытка получения данных из кэша
+
+alt
+Redis --> MES_API: Получение данных (Попадание в кеш)
+else
+Redis --> MES_API: Пустой ответ (Промах кэша)
+MES_API --> MES_DB: Запрос заказов из БД
+MES_DB --> MES_API: Получение данных из БД
+MES_API --> Redis: Сохранение данных в Кеш
+end
+
+MES_API --> Operator: список заказов
+
+@enduml

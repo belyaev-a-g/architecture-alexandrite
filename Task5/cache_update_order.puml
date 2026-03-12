@@ -1,0 +1,16 @@
+@startuml
+
+title Обновление статуса заказа
+
+actor Operator
+participant MES_API
+participant Redis
+database MES_DB
+
+Operator --> MES_API: Запрос на обновление статуса заказа
+MES_API --> MES_DB: обновление статуса
+MES_DB --> MES_API: ОК
+MES_API --> Redis: обновление заказа
+MES_API --> Operator: Подтверждение обновления
+
+@enduml
